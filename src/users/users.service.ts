@@ -13,7 +13,15 @@ export class UsersService {
   ) {}
 
 async create(data: { email: string; password: string; role?: string }) {
-  const user = this.usersRepo.create(data);
+  let role: UserRole = UserRole.CLIENTE;
+  if (data.role && Object.values(UserRole).includes(data.role as UserRole)) {
+    role = data.role as UserRole;
+  }
+  const user = this.usersRepo.create({
+    email: data.email,
+    password: data.password,
+    role
+  });
   return this.usersRepo.save(user);
 }
 
