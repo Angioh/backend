@@ -12,10 +12,10 @@ export class UsersService {
     private usersRepo: Repository<User>,
   ) {}
 
-  async create(data: { email: string; password: string; role?: UserRole }) {
-    const user = this.usersRepo.create(data);
-    return this.usersRepo.save(user);
-  }
+async create(data: { email: string; password: string; role?: string }) {
+  const user = this.usersRepo.create(data);
+  return this.usersRepo.save(user);
+}
 
   async findByEmail(email: string) {
     return this.usersRepo.findOne({ where: { email } });
