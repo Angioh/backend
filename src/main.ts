@@ -3,18 +3,14 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  app.enableCors({
+    origin: 'http://localhost:4200', // Reemplaza con el origen de tu frontend
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  });
+
   await app.listen(process.env.PORT ?? 3000);
-
-  const whitelist = ['http://localhost:4200', 'https://admin.frontend.com'];
-app.enableCors({
-  origin: (origin, callback) => {
-    if (!origin || whitelist.includes(origin)) {
-      callback(null, true); // Permitir la solicitud
-    } else {
-      callback(new Error('No permitido por CORS')); // Denegar la solicitud
-    }
-  },
-});
-
 }
 bootstrap();
