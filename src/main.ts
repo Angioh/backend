@@ -5,7 +5,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   await app.listen(process.env.PORT ?? 3000);
 
-  const whitelist = ['http://localhost:4200/', 'https://admin.frontend.com'];
+  const whitelist = ['http://localhost:4200', 'https://admin.frontend.com'];
 app.enableCors({
   origin: (origin, callback) => {
     if (!origin || whitelist.includes(origin)) {
