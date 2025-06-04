@@ -16,11 +16,11 @@ import { Roles } from '../common/decorators/roles.decorator';
 import { UserRole } from '../users/user.entity';
 
 @Controller('tablas')
-@UseGuards(JwtAuthGuard, RolesGuard)
 export class TablasController {
   constructor(private readonly tablasService: TablasService) {}
 
   @Post()
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
   create(@Body() data: Partial<Tabla>) {
     return this.tablasService.create(data);
@@ -37,12 +37,14 @@ export class TablasController {
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
   update(@Param('id') id: string, @Body() data: Partial<Tabla>) {
     return this.tablasService.update(Number(id), data);
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
   remove(@Param('id') id: string) {
     return this.tablasService.remove(Number(id));
