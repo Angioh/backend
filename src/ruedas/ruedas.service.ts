@@ -1,26 +1,33 @@
 import { Injectable } from '@nestjs/common';
-import { CreateRuedaDto } from './dto/create-rueda.dto';
-import { UpdateRuedaDto } from './dto/update-rueda.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Rueda } from './entities/rueda.entity';
 
 @Injectable()
 export class RuedasService {
-  create(createRuedaDto: CreateRuedaDto) {
-    return 'This action adds a new rueda';
-  }
-
-  findAll() {
-    return `This action returns all ruedas`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} rueda`;
-  }
-
-  update(id: number, updateRuedaDto: UpdateRuedaDto) {
-    return `This action updates a #${id} rueda`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} rueda`;
-  }
+ constructor(
+     @InjectRepository(Rueda)
+     private ruedasRepo: Repository<Rueda>,
+   ) {}
+ 
+   create(data: Partial<Rueda>) {
+     const rueda = this.ruedasRepo.create(data);
+     return this.ruedasRepo.save(rueda);
+   }
+ 
+   findAll() {
+     return this.ruedasRepo.find();
+   }
+ 
+   findOne(id: number) {
+     return this.ruedasRepo.findOne({ where: { id } });
+   }
+ 
+   update(id: number, data: Partial<Rueda>) {
+     return this.ruedasRepo.update(id, data);
+   }
+ 
+   remove(id: number) {
+     return this.ruedasRepo.delete(id);
+   }
 }

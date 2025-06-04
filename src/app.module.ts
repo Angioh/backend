@@ -9,6 +9,7 @@ import { TornillosModule } from './tornillos/tornillos.module';
 import { EjesModule } from './ejes/ejes.module';
 import { RodamientosModule } from './rodamientos/rodamientos.module';
 import { LijasModule } from './lijas/lijas.module';
+import { PedidosModule } from './pedidos/pedidos.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { LijasModule } from './lijas/lijas.module';
     EjesModule,
     RodamientosModule,
     LijasModule,
+    PedidosModule,
     // Otros módulos
   ],
 })

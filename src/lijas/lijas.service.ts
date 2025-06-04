@@ -1,26 +1,33 @@
 import { Injectable } from '@nestjs/common';
-import { CreateLijaDto } from './dto/create-lija.dto';
-import { UpdateLijaDto } from './dto/update-lija.dto';
+import { Lija } from './entities/lija.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class LijasService {
-  create(createLijaDto: CreateLijaDto) {
-    return 'This action adds a new lija';
+constructor(
+    @InjectRepository(Lija)
+    private lijasRepo: Repository<Lija>,
+  ) {}
+
+  create(data: Partial<Lija>) {
+    const lija= this.lijasRepo.create(data);
+    return this.lijasRepo.save(lija);
   }
 
   findAll() {
-    return `This action returns all lijas`;
+    return this.lijasRepo.find();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} lija`;
+    return this.lijasRepo.findOne({ where: { id } });
   }
 
-  update(id: number, updateLijaDto: UpdateLijaDto) {
-    return `This action updates a #${id} lija`;
+  update(id: number, data: Partial<Lija>) {
+    return this.lijasRepo.update(id, data);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} lija`;
+    return this.lijasRepo.delete(id);
   }
 }

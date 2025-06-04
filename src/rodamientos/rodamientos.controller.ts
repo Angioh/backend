@@ -1,15 +1,14 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { RodamientosService } from './rodamientos.service';
-import { CreateRodamientoDto } from './dto/create-rodamiento.dto';
-import { UpdateRodamientoDto } from './dto/update-rodamiento.dto';
+import { Rodamiento } from './entities/rodamiento.entity';
 
 @Controller('rodamientos')
 export class RodamientosController {
   constructor(private readonly rodamientosService: RodamientosService) {}
 
   @Post()
-  create(@Body() createRodamientoDto: CreateRodamientoDto) {
-    return this.rodamientosService.create(createRodamientoDto);
+  create(@Body() data: Partial<Rodamiento>) {
+    return this.rodamientosService.create(data);
   }
 
   @Get()
@@ -19,16 +18,16 @@ export class RodamientosController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.rodamientosService.findOne(+id);
+    return this.rodamientosService.findOne(Number(id));
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRodamientoDto: UpdateRodamientoDto) {
-    return this.rodamientosService.update(+id, updateRodamientoDto);
+  update(@Param('id') id: string, @Body() data: Partial<Rodamiento>) {
+    return this.rodamientosService.update(Number(id), data);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.rodamientosService.remove(+id);
+    return this.rodamientosService.remove(Number(id));
   }
 }

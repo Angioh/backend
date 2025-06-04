@@ -1,15 +1,14 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { TornillosService } from './tornillos.service';
-import { CreateTornilloDto } from './dto/create-tornillo.dto';
-import { UpdateTornilloDto } from './dto/update-tornillo.dto';
+import { Tornillo } from './entities/tornillo.entity';
 
 @Controller('tornillos')
 export class TornillosController {
   constructor(private readonly tornillosService: TornillosService) {}
 
   @Post()
-  create(@Body() createTornilloDto: CreateTornilloDto) {
-    return this.tornillosService.create(createTornilloDto);
+  create(@Body() data: Partial<Tornillo>) {
+    return this.tornillosService.create(data);
   }
 
   @Get()
@@ -19,16 +18,16 @@ export class TornillosController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.tornillosService.findOne(+id);
+    return this.tornillosService.findOne(Number(id));
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTornilloDto: UpdateTornilloDto) {
-    return this.tornillosService.update(+id, updateTornilloDto);
+  update(@Param('id') id: string, @Body() data: Partial<Tornillo>) {
+    return this.tornillosService.update(Number(id), data);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.tornillosService.remove(+id);
+    return this.tornillosService.remove(Number(id));
   }
 }

@@ -1,15 +1,14 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { LijasService } from './lijas.service';
-import { CreateLijaDto } from './dto/create-lija.dto';
-import { UpdateLijaDto } from './dto/update-lija.dto';
+import { Lija } from './entities/lija.entity';
 
 @Controller('lijas')
 export class LijasController {
   constructor(private readonly lijasService: LijasService) {}
 
   @Post()
-  create(@Body() createLijaDto: CreateLijaDto) {
-    return this.lijasService.create(createLijaDto);
+  create(@Body() data: Partial<Lija>) {
+    return this.lijasService.create(data);
   }
 
   @Get()
@@ -19,16 +18,16 @@ export class LijasController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.lijasService.findOne(+id);
+    return this.lijasService.findOne(Number(id));
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateLijaDto: UpdateLijaDto) {
-    return this.lijasService.update(+id, updateLijaDto);
+  update(@Param('id') id: string, @Body() data: Partial<Lija>) {
+    return this.lijasService.update(Number(id), data);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.lijasService.remove(+id);
+    return this.lijasService.remove(Number(id));
   }
 }

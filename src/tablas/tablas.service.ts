@@ -1,26 +1,33 @@
 import { Injectable } from '@nestjs/common';
-import { CreateTablaDto } from './dto/create-tabla.dto';
-import { UpdateTablaDto } from './dto/update-tabla.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Tabla } from './entities/tabla.entity';
 
 @Injectable()
 export class TablasService {
-  create(createTablaDto: CreateTablaDto) {
-    return 'This action adds a new tabla';
-  }
-
-  findAll() {
-    return `This action returns all tablas`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} tabla`;
-  }
-
-  update(id: number, updateTablaDto: UpdateTablaDto) {
-    return `This action updates a #${id} tabla`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} tabla`;
-  }
+  constructor(
+      @InjectRepository(Tabla)
+      private tablasRepo: Repository<Tabla>,
+    ) {}
+  
+    create(data: Partial<Tabla>) {
+      const tabla= this.tablasRepo.create(data);
+      return this.tablasRepo.save(tabla);
+    }
+  
+    findAll() {
+      return this.tablasRepo.find();
+    }
+  
+    findOne(id: number) {
+      return this.tablasRepo.findOne({ where: { id } });
+    }
+  
+    update(id: number, data: Partial<Tabla>) {
+      return this.tablasRepo.update(id, data);
+    }
+  
+    remove(id: number) {
+      return this.tablasRepo.delete(id);
+    }
 }

@@ -22,4 +22,10 @@ export class User {
     default: UserRole.CLIENTE,
   })
   role: UserRole;
+
+  @Column()
+  nombre: string;
+
+  @Column()
+  apellido: string;
 }

@@ -1,26 +1,33 @@
+import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
-import { CreateTornilloDto } from './dto/create-tornillo.dto';
-import { UpdateTornilloDto } from './dto/update-tornillo.dto';
+import { Tornillo } from './entities/tornillo.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class TornillosService {
-  create(createTornilloDto: CreateTornilloDto) {
-    return 'This action adds a new tornillo';
+constructor(
+    @InjectRepository(Tornillo)
+    private tornillosRepo: Repository<Tornillo>,
+  ) {}
+
+  create(data: Partial<Tornillo>) {
+    const tornillo= this.tornillosRepo.create(data);
+    return this.tornillosRepo.save(tornillo);
   }
 
   findAll() {
-    return `This action returns all tornillos`;
+    return this.tornillosRepo.find();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} tornillo`;
+    return this.tornillosRepo.findOne({ where: { id } });
   }
 
-  update(id: number, updateTornilloDto: UpdateTornilloDto) {
-    return `This action updates a #${id} tornillo`;
+  update(id: number, data: Partial<Tornillo>) {
+    return this.tornillosRepo.update(id, data);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} tornillo`;
+    return this.tornillosRepo.delete(id);
   }
 }

@@ -1,26 +1,33 @@
 import { Injectable } from '@nestjs/common';
-import { CreateEjeDto } from './dto/create-eje.dto';
-import { UpdateEjeDto } from './dto/update-eje.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Eje } from './entities/eje.entity';
 
 @Injectable()
 export class EjesService {
-  create(createEjeDto: CreateEjeDto) {
-    return 'This action adds a new eje';
+constructor(
+    @InjectRepository(Eje)
+    private ejesRepo: Repository<Eje>,
+  ) {}
+
+  create(data: Partial<Eje>) {
+    const eje = this.ejesRepo.create(data);
+    return this.ejesRepo.save(eje);
   }
 
   findAll() {
-    return `This action returns all ejes`;
+    return this.ejesRepo.find();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} eje`;
+    return this.ejesRepo.findOne({ where: { id } });
   }
 
-  update(id: number, updateEjeDto: UpdateEjeDto) {
-    return `This action updates a #${id} eje`;
+  update(id: number, data: Partial<Eje>) {
+    return this.ejesRepo.update(id, data);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} eje`;
+    return this.ejesRepo.delete(id);
   }
 }

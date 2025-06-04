@@ -12,7 +12,7 @@ export class UsersService {
     private usersRepo: Repository<User>,
   ) {}
 
-async create(data: { email: string; password: string; role?: string }) {
+async create(data: { email: string; password: string; role?: string; nombre: string; apellido: string; }) {
   let role: UserRole = UserRole.CLIENTE;
   if (data.role && Object.values(UserRole).includes(data.role as UserRole)) {
     role = data.role as UserRole;
@@ -20,7 +20,9 @@ async create(data: { email: string; password: string; role?: string }) {
   const user = this.usersRepo.create({
     email: data.email,
     password: data.password,
-    role
+    role,
+    nombre: data.nombre,
+    apellido: data.apellido,
   });
   return this.usersRepo.save(user);
 }

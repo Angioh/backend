@@ -8,8 +8,22 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
 @Post('register')
-async register(@Body() body: { email: string; password: string; role?: string }) {
-  return this.authService.register(body.email, body.password, body.role);
+async register(
+  @Body() body: { 
+    email: string; 
+    password: string; 
+    role?: string; 
+    nombre: string; 
+    apellido: string; 
+  }
+) {
+  return this.authService.register(
+    body.email, 
+    body.password, 
+    body.role, 
+    body.nombre, 
+    body.apellido
+  );
 }
 
   @Post('login')
@@ -20,7 +34,6 @@ async register(@Body() body: { email: string; password: string; role?: string })
   @UseGuards(JwtAuthGuard)
   @Get('profile')
   getProfile(@GetUser() user) {
-    // Devuelve el usuario autenticado (puedes omitir la contraseña)
     if (user && user.password) delete user.password;
     return user;
   }

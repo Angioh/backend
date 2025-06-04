@@ -1,15 +1,14 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { EjesService } from './ejes.service';
-import { CreateEjeDto } from './dto/create-eje.dto';
-import { UpdateEjeDto } from './dto/update-eje.dto';
+import { Eje } from './entities/eje.entity';
 
 @Controller('ejes')
 export class EjesController {
   constructor(private readonly ejesService: EjesService) {}
 
   @Post()
-  create(@Body() createEjeDto: CreateEjeDto) {
-    return this.ejesService.create(createEjeDto);
+  create(@Body() data: Partial<Eje>) {
+    return this.ejesService.create(data);
   }
 
   @Get()
@@ -19,16 +18,16 @@ export class EjesController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.ejesService.findOne(+id);
+    return this.ejesService.findOne(Number(id));
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateEjeDto: UpdateEjeDto) {
-    return this.ejesService.update(+id, updateEjeDto);
+  update(@Param('id') id: string, @Body() data: Partial<Eje>) {
+    return this.ejesService.update(Number(id), data);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.ejesService.remove(+id);
+    return this.ejesService.remove(Number(id));
   }
 }
