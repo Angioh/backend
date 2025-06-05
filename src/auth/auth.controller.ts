@@ -1,9 +1,9 @@
-// src/auth/auth.controller.ts
 
 import { Controller, Post, Body, Get, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt-auth.guard';
-import { GetUser } from './get-user-decorator'; // Asegúrate de que corresponde a tu archivo
+import { GetUser } from './get-user-decorator';
+import { User } from '../users/user.entity';
 
 @Controller('auth')
 export class AuthController {
@@ -33,11 +33,15 @@ export class AuthController {
     return this.authService.login(body.email, body.password);
   }
 
-  // Usamos GetUser para inyectar directamente el objeto 'user' 
+  /**
+   * Al proteger con JwtAuthGuard, Passport ejecuta JwtStrategy.validate(),
+   * que retorna la entidad User (sin contraseña). Entonces `@GetUser() user`
+   * ya será un objeto con { id, email, role, nombre, apellido }.
+   */
   @UseGuards(JwtAuthGuard)
   @Get('profile')
-  async getProfile(@GetUser() user: any) {
-    const { password, ...userWithoutPassword } = user;
-    return userWithoutPassword;
+  getProfile(@GetUser() user: User) {
+    // user ya es la entidad completa (sin password).
+    return user;
   }
 }

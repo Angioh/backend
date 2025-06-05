@@ -1,9 +1,10 @@
-// src/auth/get-user.decorator.ts
+
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+import { User } from '../users/user.entity';
 
 export const GetUser = createParamDecorator(
-  (data, ctx: ExecutionContext) => {
+  (data: unknown, ctx: ExecutionContext): User => {
     const req = ctx.switchToHttp().getRequest();
-    return req.user;
+    return req.user; // req.user ya es la entidad User completa desde JwtStrategy.validate()
   },
 );
