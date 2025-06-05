@@ -13,24 +13,21 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  /**
-   * Registra un nuevo usuario, guardando email, password (hasheada),
-   * role, nombre y apellido en la base de datos.
-   */
   async register(
-    email: string,
-    password: string,
-    role: string = 'cliente',
     nombre: string,
-    apellido: string
+  apellido: string,
+  email: string,
+  password: string,
+  role: string = 'cliente'
   ) {
     const hashedPassword = await bcrypt.hash(password, 10);
     return this.usersService.create({
+      nombre,
+      apellido,
       email,
       password: hashedPassword,
       role,
-      nombre,
-      apellido
+      
     });
   }
 
