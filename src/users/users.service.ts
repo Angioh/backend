@@ -1,3 +1,4 @@
+// src/users/users.service.ts
 
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -23,6 +24,7 @@ export class UsersService {
     direccion?: string;
     telefono?: string;
   }): Promise<User> {
+    // 1) Determinar el rol (por defecto CLIENTE)
     let role: UserRole = UserRole.CLIENTE;
     if (
       data.role !== undefined &&
@@ -46,22 +48,31 @@ export class UsersService {
     return await this.usersRepo.save(userEntity);
   }
 
-
+  /**
+   * Busca un usuario por email. Retorna null si no existe.
+   */
   async findByEmail(email: string): Promise<User | null> {
     return await this.usersRepo.findOne({ where: { email } });
   }
 
-
+  /**
+   * Devuelve todos los usuarios. Incluye 'direccion' y 'telefono' si existen.
+   */
   async findAll(): Promise<User[]> {
     return await this.usersRepo.find();
   }
 
-
+  /**
+   * Busca un usuario por su ID. Retorna null si no existe.
+   */
   async findOne(id: number): Promise<User | null> {
     return await this.usersRepo.findOne({ where: { id } });
   }
 
-
+  /**
+   * Actualiza parcialmente un usuario existente.
+   * Solo se incluirán en la actualización los campos definidos en 'data'.
+   */
   async update(
     id: number,
     data: {
@@ -74,9 +85,10 @@ export class UsersService {
       telefono?: string;
     },
   ): Promise<User> {
-
+    // 1) Construir un objeto parcial con el ID
     const partial: Partial<User> = { id };
 
+    // 2) Asignar solo los campos que vienen definidos
     if (data.email !== undefined) {
       partial.email = data.email;
     }
@@ -102,15 +114,19 @@ export class UsersService {
       partial.telefono = data.telefono;
     }
 
+    // 3) Preload: busca en BD el usuario con ese ID y mezcla los campos de 'partial'
     const entityToUpdate = await this.usersRepo.preload(partial);
     if (!entityToUpdate) {
       throw new NotFoundException(`Usuario con id ${id} no encontrado`);
     }
 
+    // 4) Save: guarda la entidad actualizada
     return await this.usersRepo.save(entityToUpdate);
   }
 
-
+  /**
+   * Elimina un usuario por ID. Lanza NotFoundException si no existe.
+   */
   async remove(id: number): Promise<void> {
     const userToRemove = await this.usersRepo.findOne({ where: { id } });
     if (!userToRemove) {

@@ -30,8 +30,8 @@ export class User {
   apellido: string;
 
   @Column({ type: 'varchar', length: 255, nullable: true, default: null })
-  direccion: string;
+  direccion: string| null;
 
   @Column({ type: 'varchar', length: 9, nullable: true, default: null })
-  telefono: string
+  telefono: string| null;
 }
