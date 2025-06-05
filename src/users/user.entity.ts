@@ -28,4 +28,10 @@ export class User {
 
   @Column()
   apellido: string;
+
+  @Column()
+  direccion: string;
+
+  @Column()
+  telefono: number;
 }

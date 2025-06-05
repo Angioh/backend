@@ -1,8 +1,11 @@
 // src/users/users.controller.ts
+
 import {
   Controller,
   Get,
+  Patch,
   Param,
+  Body,
   UseGuards,
   ParseIntPipe,
 } from '@nestjs/common';
@@ -17,8 +20,23 @@ export class UsersController {
   @Get(':id')
   @UseGuards(JwtAuthGuard, OwnerOrAdminGuard)
   async findOne(@Param('id', ParseIntPipe) id: number) {
-
     return this.usersService.findOne(id);
   }
 
+  @Patch(':id')
+  @UseGuards(JwtAuthGuard, OwnerOrAdminGuard)
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() data: {
+      email?: string;
+      password?: string;
+      role?: string;
+      nombre?: string;
+      apellido?: string;
+      direccion?: string;
+      telefono?: string;
+    },
+  ) {
+    return this.usersService.update(id, data);
+  }
 }
