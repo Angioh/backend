@@ -1,8 +1,9 @@
+// src/auth/auth.controller.ts
 
-import { Controller, Post, Body, Get, UseGuards, Req } from '@nestjs/common';
+import { Controller, Post, Body, Get, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt-auth.guard';
-import { Request } from 'express';
+import { GetUser } from './get-user-decorator'; // Asegúrate de que corresponde a tu archivo
 
 @Controller('auth')
 export class AuthController {
@@ -32,10 +33,12 @@ export class AuthController {
     return this.authService.login(body.email, body.password);
   }
 
+  // Usamos GetUser para inyectar directamente el objeto 'user' 
   @UseGuards(JwtAuthGuard)
   @Get('profile')
-  async getProfile(@Req() req: Request) {
-    const userId = (req.user as any).sub;
-    return this.authService.getProfile(userId);
+  async getProfile(@GetUser() user: any) {
+
+    const { password, ...userWithoutPassword } = user;
+    return userWithoutPassword;
   }
 }
