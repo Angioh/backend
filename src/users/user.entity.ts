@@ -29,9 +29,9 @@ export class User {
   @Column()
   apellido: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: 255, nullable: true, default: null })
   direccion: string;
 
-  @Column()
-  telefono: number;
+  @Column({ type: 'varchar', length: 9, nullable: true, default: null })
+  telefono: string
 }
