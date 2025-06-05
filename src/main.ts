@@ -6,15 +6,15 @@ import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.int
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // 1) Configuración sencilla permitiendo solo el origen de Angular (localhost:4200)
+  // Configuración de CORS ampliada:
   const corsConfig: CorsOptions = {
-    origin: 'http://localhost:4200',         // <-- Origen permitido
-    methods: 'GET,HEAD,PUT,POST,DELETE,OPTIONS',
-    allowedHeaders: 'Content-Type, Accept',  // Otras cabeceras que Angular envíe
-    credentials: true                        // Si usas cookies o credenciales
+    origin: 'http://localhost:4200',                // Origen permitido
+    methods: 'GET,HEAD,PUT,POST,DELETE,OPTIONS',    // Métodos permitidos
+    allowedHeaders: 'Content-Type, Accept, Authorization', // Incluye 'Authorization'
+    credentials: true                               // Permite cookies/credenciales
   };
 
-  app.enableCors(corsConfig);
+  app.enableCors(corsConfig); // :contentReference[oaicite:2]{index=2}
 
   await app.listen(process.env.PORT || 3000);
 }
