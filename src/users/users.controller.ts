@@ -8,7 +8,6 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-// ya no importamos RolesGuard ni Roles ni Role aquí
 import { OwnerOrAdminGuard } from '../auth/owner-or-admin.guard';
 
 @Controller('users')
