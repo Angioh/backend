@@ -1,4 +1,6 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+// src/auth/auth.service.ts
+
+import { Injectable, UnauthorizedException, NotFoundException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { UsersService } from '../users/users.service';
@@ -11,17 +13,26 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-async register(
-  email: string, 
-  password: string, 
-  role: string = 'cliente',
-  nombre: string,
-  apellido: string
-) {
-  const hashedPassword = await bcrypt.hash(password, 10);
-
-  return this.usersService.create({ email, password: hashedPassword, role, nombre, apellido });
-}
+  /**
+   * Registra un nuevo usuario, guardando email, password (hasheada),
+   * role, nombre y apellido en la base de datos.
+   */
+  async register(
+    email: string,
+    password: string,
+    role: string = 'cliente',
+    nombre: string,
+    apellido: string
+  ) {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    return this.usersService.create({
+      email,
+      password: hashedPassword,
+      role,
+      nombre,
+      apellido
+    });
+  }
 
 
   async login(email: string, password: string) {
@@ -34,5 +45,16 @@ async register(
     return {
       access_token: this.jwtService.sign(payload),
     };
+  }
+
+  async getProfile(userId: number) {
+
+    const user = await this.usersService.findOne(userId);
+    if (!user) {
+      throw new NotFoundException(`Usuario con ID ${userId} no encontrado`);
+    }
+
+    const { password, ...userWithoutPassword } = user;
+    return userWithoutPassword;
   }
 }
