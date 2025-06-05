@@ -33,11 +33,6 @@ export class AuthController {
     return this.authService.login(body.email, body.password);
   }
 
-  /**
-   * Al proteger con JwtAuthGuard, Passport ejecuta JwtStrategy.validate(),
-   * que retorna la entidad User (sin contraseña). Entonces `@GetUser() user`
-   * ya será un objeto con { id, email, role, nombre, apellido }.
-   */
   @UseGuards(JwtAuthGuard)
   @Get('profile')
   getProfile(@GetUser() user: User) {

@@ -1,28 +1,27 @@
-// src/users/users.controller.ts
-
-import { Controller, Get, Param, UseGuards } from '@nestjs/common';
+// src/users/users.controller.ts (ejemplo típico)
+import {
+  Controller,
+  Get,
+  Param,
+  UseGuards,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
-import { User } from './user.entity';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { RolesGuard } from '../common/guards/roles.guard';
-import { Roles } from '../common/decorators/roles.decorator';
-import { UserRole } from './user.entity';
+import { RolesGuard } from '../common/guards/roles.guard'
+import { Roles } from '../common/decorators/roles.decorator'
+import { Role } from '../auth/role.enum';
 
 @Controller('users')
-@UseGuards(JwtAuthGuard, RolesGuard)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Get()
-  @Roles(UserRole.ADMIN)
-  findAll(): Promise<User[]> {
-    return this.usersService.findAll();
+  @Get(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN) // ← Esto actualmente deja que solo ADMIN llame a GET /users/:id
+  async findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.usersService.findOne(id);
   }
 
- @Get(':id')
-@Roles(UserRole.ADMIN)
-findOne(@Param('id') id: string): Promise<User | null> {
-  return this.usersService.findOne(+id);
-}
-
+  // ... otros endpoints ...
 }
