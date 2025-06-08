@@ -1,3 +1,4 @@
+import { InvoiceModule } from './invoice/invoice.module';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -16,11 +17,11 @@ import { LijasModule } from './lijas/lijas.module';
 import { PedidosModule } from './pedidos/pedidos.module';
 import { StripeModule } from './stripe/stripe.module';
 
-import { InvoiceModule } from './invoice/invoice.module';
 import { EmailModule } from './email/email.module';
 
 @Module({
   imports: [
+    InvoiceModule,
     // Configuración global de variables de entorno
     ConfigModule.forRoot({ isGlobal: true }),
 
@@ -54,7 +55,9 @@ import { EmailModule } from './email/email.module';
     MailerModule.forRoot({
       transport: {
         host: process.env.SMTP_HOST,
-        port: process.env.SMTP_PORT ? parseInt(process.env.SMTP_PORT, 10) : undefined,
+        port: process.env.SMTP_PORT
+          ? parseInt(process.env.SMTP_PORT, 10)
+          : undefined,
         secure: false,
         auth: {
           user: process.env.SMTP_USER,
