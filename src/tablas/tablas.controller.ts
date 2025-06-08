@@ -19,7 +19,7 @@ import { UserRole } from '../users/user.entity';
 export class TablasController {
   constructor(private readonly tablasService: TablasService) {}
 
-  @Post()
+ @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
   create(@Body() data: Partial<Tabla>) {
@@ -39,7 +39,10 @@ export class TablasController {
   @Patch(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
-  update(@Param('id') id: string, @Body() data: Partial<Tabla>) {
+  update(
+    @Param('id') id: string,
+    @Body() data: Partial<Tabla>,
+  ) {
     return this.tablasService.update(Number(id), data);
   }
 

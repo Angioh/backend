@@ -14,14 +14,10 @@ export class PedidosService {
     private itemsRepo: Repository<PedidoItem>,
   ) {}
 
-  /**
-   * Crea un pedido junto con sus items (si vienen en data.items).
-   */
+
   async create(data: any): Promise<Pedido> {
     const { items = [], ...pedidoData } = data;
 
-    // Forzamos la sobrecarga correcta: tratamos pedidoData como DeepPartial<Pedido>,
-    // luego casteamos a unknown y finalmente a Pedido.
     const pedido = this.pedidosRepo.create(
       pedidoData as DeepPartial<Pedido>,
     ) as unknown as Pedido;
@@ -40,16 +36,12 @@ export class PedidosService {
     return this.pedidosRepo.save(pedido);
   }
 
-  /**
-   * Devuelve todos los pedidos cargando también la relación `items`.
-   */
+
   async findAll(): Promise<Pedido[]> {
     return this.pedidosRepo.find({ relations: ['items'] });
   }
 
-  /**
-   * Devuelve un solo pedido (con sus items) o lanza NotFoundException.
-   */
+ 
   async findOne(id: number): Promise<Pedido> {
     const pedido = await this.pedidosRepo.findOne({
       where: { id },
@@ -59,9 +51,7 @@ export class PedidosService {
     return pedido;
   }
 
-  /**
-   * Actualiza un pedido. Si llega data.items, reemplaza completamente los items.
-   */
+ 
   async update(id: number, data: any): Promise<Pedido> {
     const pedido = await this.findOne(id);
     const { items, ...pedidoData } = data;
@@ -85,9 +75,7 @@ export class PedidosService {
     return this.pedidosRepo.save(pedido);
   }
 
-  /**
-   * Elimina un pedido (y sus items por cascade).
-   */
+
   async remove(id: number): Promise<void> {
     await this.findOne(id);
     await this.pedidosRepo.delete(id);
