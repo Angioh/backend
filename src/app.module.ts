@@ -10,15 +10,17 @@ import { EjesModule } from './ejes/ejes.module';
 import { RodamientosModule } from './rodamientos/rodamientos.module';
 import { LijasModule } from './lijas/lijas.module';
 import { PedidosModule } from './pedidos/pedidos.module';
+import { StripeModule } from './stripe/stripe.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    StripeModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: process.env.DATABASE_URL,
       autoLoadEntities: true,
-      synchronize: true, // No usar en producción
+      synchronize: true,
     }),
     UsersModule,
     AuthModule,
@@ -29,7 +31,6 @@ import { PedidosModule } from './pedidos/pedidos.module';
     RodamientosModule,
     LijasModule,
     PedidosModule,
-    // Otros módulos
   ],
 })
 export class AppModule {}
