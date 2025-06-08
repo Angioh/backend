@@ -36,7 +36,7 @@ export class Pedido {
   cantidad: number;
 
   @Column()
-  nombre_producto: string;
+  nombre_user: string;
 
 
   @Column()
