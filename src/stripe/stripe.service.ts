@@ -1,15 +1,14 @@
-import { Inject, Injectable } from '@nestjs/common';
+// src/stripe/stripe.service.ts
+import { Injectable } from '@nestjs/common';
 import Stripe from 'stripe';
 
 @Injectable()
 export class StripeService {
-  constructor(@Inject('STRIPE_CLIENT') private stripeClient: Stripe) {}
+  private stripe = new Stripe(process.env.STRIPE_API_KEY || '', {
+    apiVersion: '2025-05-28.basil',
+  });
 
-  async createPaymentIntent(amount: number): Promise<string> {
-    const paymentIntent = await this.stripeClient.paymentIntents.create({
-      amount,
-      currency: 'usd',
-    });
-    return paymentIntent.client_secret;
+  async createPaymentIntent(amount: number, currency = 'eur') {
+    return this.stripe.paymentIntents.create({ amount, currency });
   }
 }

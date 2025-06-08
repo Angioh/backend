@@ -15,7 +15,7 @@ import { StripeModule } from './stripe/stripe.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    StripeModule.forRoot(),
+    StripeModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: process.env.DATABASE_URL,
