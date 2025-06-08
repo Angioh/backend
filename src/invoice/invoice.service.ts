@@ -1,5 +1,7 @@
+
 import { Injectable } from '@nestjs/common';
-import PDFDocument from 'pdfkit';
+// Importación corregida de PDFKit:
+import * as PDFDocument from 'pdfkit';
 import { WritableStreamBuffer } from 'stream-buffers';
 
 export interface InvoiceItem {
@@ -17,19 +19,19 @@ export interface InvoiceData {
 @Injectable()
 export class InvoiceService {
   async generateInvoice(data: InvoiceData): Promise<Buffer> {
-    const doc = new PDFDocument({ size: 'A4', margin: 40 });
+    // Ahora sí podemos instanciar correctamente:
+    const doc = new PDFDocument({ size: 'A4', margin: 50 });  // :contentReference[oaicite:0]{index=0}
     const stream = new WritableStreamBuffer();
 
     doc.pipe(stream);
 
-    // Cabecera
+    // --- resto de la generación de la factura ---
     doc.fontSize(20).text(`Factura #${data.number}`, { align: 'right' });
     doc.moveDown();
     doc.fontSize(12).text(`Fecha: ${data.date}`);
     doc.text(`Cliente: ${data.customer.name}`);
     doc.moveDown();
 
-    // Tabla de items
     doc.text('Descripción          Cantidad    Precio    Subtotal');
     let total = 0;
     data.items.forEach(it => {
