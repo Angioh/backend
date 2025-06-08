@@ -20,15 +20,14 @@ import { EmailController } from './email.controller';
         },
       },
       defaults: {
-        from: `"Mi Empresa" <${process.env.SMTP_USER}>`,
+        from: `"KickFlip Shop" <${process.env.SMTP_USER}>`,
       },
       template: {
         dir: join(__dirname, '../templates'),
-        adapter: new HandlebarsAdapter({
-          helpers: {
-            multiply: (a: number, b: number) => (a * b).toFixed(2),
-          },
-        }),
+        // PASAMOS directamente el objeto de helpers como primer argumento
+        adapter: new HandlebarsAdapter(
+          { multiply: (a: number, b: number) => (a * b).toFixed(2) }
+        ),
         options: { strict: true },
       },
     }),
