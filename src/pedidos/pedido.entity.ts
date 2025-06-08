@@ -1,4 +1,12 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToMany,
+} from 'typeorm';
+import { PedidoItem } from './pedido-item.entity';
 
 export enum PedidoEstado {
   RECIBIDO = 'recibido',
@@ -29,4 +37,20 @@ export class Pedido {
 
   @Column()
   nombre_producto: string;
+
+
+  @Column()
+  userId: number;
+
+  @CreateDateColumn({ name: 'fechaCreacion', type: 'timestamp' })
+  fechaCreacion: Date;
+
+  @UpdateDateColumn({ name: 'fechaActualizacion', type: 'timestamp' })
+  fechaActualizacion: Date;
+
+  @OneToMany(() => PedidoItem, (item) => item.pedido, {
+    cascade: true,
+    eager: true,
+  })
+  items: PedidoItem[];
 }
