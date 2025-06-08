@@ -1,9 +1,39 @@
 import { Module } from '@nestjs/common';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+import { join } from 'path';
+import { InvoiceModule } from '../invoice/invoice.module';
 import { EmailService } from './email.service';
 import { EmailController } from './email.controller';
 
 @Module({
-  providers: [EmailService, EmailController],
+  imports: [
+    InvoiceModule,
+    MailerModule.forRoot({
+      transport: {
+        host: process.env.SMTP_HOST,
+        port: parseInt(process.env.SMTP_PORT || '587', 10),
+        secure: false,
+        auth: {
+          user: process.env.SMTP_USER,
+          pass: process.env.SMTP_PASS,
+        },
+      },
+      defaults: {
+        from: `"Mi Empresa" <${process.env.SMTP_USER}>`,
+      },
+      template: {
+        dir: join(__dirname, '../templates'),
+        adapter: new HandlebarsAdapter({
+          helpers: {
+            multiply: (a: number, b: number) => (a * b).toFixed(2),
+          },
+        }),
+        options: { strict: true },
+      },
+    }),
+  ],
+  providers: [EmailService],
   controllers: [EmailController],
   exports: [EmailService],
 })

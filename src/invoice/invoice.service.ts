@@ -1,19 +1,23 @@
 import { Injectable } from '@nestjs/common';
-import * as PDFKit from 'pdfkit';
+import PDFDocument from 'pdfkit';
 import { WritableStreamBuffer } from 'stream-buffers';
 
-interface InvoiceItem { description: string; quantity: number; price: number; }
+export interface InvoiceItem {
+  description: string;
+  quantity: number;
+  price: number;
+}
 export interface InvoiceData {
   number: string;
   date: string;
-  customer: { name: string; email: string; };
+  customer: { name: string; email: string };
   items: InvoiceItem[];
 }
 
 @Injectable()
 export class InvoiceService {
   async generateInvoice(data: InvoiceData): Promise<Buffer> {
-    const doc = new PDFKit({ size: 'A4', margin: 50 });
+    const doc = new PDFDocument({ size: 'A4', margin: 40 });
     const stream = new WritableStreamBuffer();
 
     doc.pipe(stream);
@@ -26,13 +30,18 @@ export class InvoiceService {
     doc.moveDown();
 
     // Tabla de items
-    doc.text('Descripción         Cantidad     Precio     Subtotal');
-    doc.moveDown(0.5);
+    doc.text('Descripción          Cantidad    Precio    Subtotal');
     let total = 0;
-    data.items.forEach(item => {
-      const subtotal = item.quantity * item.price;
+    data.items.forEach(it => {
+      const subtotal = it.quantity * it.price;
       total += subtotal;
-      doc.text(`${item.description.padEnd(20)} ${item.quantity.toString().padEnd(10)} ${item.price.toFixed(2).padEnd(10)} ${subtotal.toFixed(2)}`);
+      doc.text(
+        `${it.description.padEnd(20)} ${it.quantity
+          .toString()
+          .padEnd(10)} ${it.price
+          .toFixed(2)
+          .padEnd(10)} ${subtotal.toFixed(2)}`,
+      );
     });
     doc.moveDown();
     doc.text(`Total: €${total.toFixed(2)}`, { align: 'right' });

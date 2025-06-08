@@ -1,4 +1,29 @@
 <h1>Factura #{{invoiceNumber}}</h1>
-<p>Hola {{customerName}},</p>
-<p>Adjunto encontrarás tu factura del día {{date}}.</p>
-<p>Gracias por tu confianza.</p>
+<p>Fecha: {{date}}</p>
+
+<h2>Cliente</h2>
+<p>{{customerName}}</p>
+
+<h2>Envío</h2>
+<ul>
+  <li>Teléfono: {{shipping.telefono}}</li>
+  <li>Dirección: {{shipping.direccion}}</li>
+  <li>Código Postal: {{shipping.codigoPostal}}</li>
+  <li>Provincia: {{shipping.provincia}}</li>
+</ul>
+
+<h2>Productos</h2>
+<table>
+  <tr><th>Descripción</th><th>Cant.</th><th>Precio</th><th>Subtotal</th></tr>
+  {{#each items}}
+    <tr>
+      <td>{{this.description}}</td>
+      <td>{{this.quantity}}</td>
+      <td>{{this.price}}</td>
+      <td>{{multiply this.quantity this.price}}</td>
+    </tr>
+  {{/each}}
+</table>
+
+<h3>Total: €{{total}}</h3>
+<p>Payment Intent ID: {{paymentIntentId}}</p>
