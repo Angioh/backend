@@ -43,13 +43,7 @@ export class EmailService {
         shipping,
         total,
         paymentIntentId,
-      },
-      attachments: [
-        {
-          filename: `factura-${invoice.number}.pdf`,
-          content: pdf,
-        },
-      ],
+      }
     });
   }
 }
