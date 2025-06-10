@@ -20,15 +20,15 @@ export class PedidosController {
   async findAll(): Promise<Pedido[]> {
     return this.pedidosService.findAll();
   }
+  @Get('ultimo')
+  async getUltimoPedido(): Promise<Pedido> {
+    return this.pedidosService.findLast();
+  }
+
 
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<Pedido> {
     return this.pedidosService.findOne(+id);
-  }
-  
-@Get('ultimo')
-  async getUltimoPedido(): Promise<Pedido> {
-    return this.pedidosService.findLast();
   }
 
   @Patch(':id')
