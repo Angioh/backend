@@ -8,7 +8,7 @@ async function bootstrap() {
 
   // Configuración de CORS ampliada:
   const corsConfig: CorsOptions = {
-    origin: 'https://frontkick-8hfv.onrender.com',                // Origen permitido
+    origin: 'http://localhost:4200',                // Origen permitido
     methods: 'GET,HEAD,PUT,POST,DELETE,OPTIONS,PATCH',    // Métodos permitidos
     allowedHeaders: 'Content-Type, Accept, Authorization', // Incluye 'Authorization'
     credentials: true                               // Permite cookies/credenciales
