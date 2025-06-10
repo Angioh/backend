@@ -27,14 +27,14 @@ export class EmailService {
     total: number,
     paymentIntentId: string,
   ) {
-    // 1. Generar PDF
+  
     const pdf = await this.invoiceService.generateInvoice(invoice);
 
-    // 2. Enviar email
+
     await this.mailer.sendMail({
       to,
       subject: `Factura #${invoice.number}`,
-      template: 'invoice', // busca invoice.hbs en /templates
+      template: 'invoice', 
       context: {
         invoiceNumber: invoice.number,
         date: invoice.date,

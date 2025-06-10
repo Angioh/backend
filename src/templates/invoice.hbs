@@ -1,29 +1,38 @@
-<h1>Factura #{{invoiceNumber}}</h1>
-<p>Fecha: {{date}}</p>
+<div style="max-width:600px;margin:0 auto;padding:20px;font-family:Arial,sans-serif;background:#f9f9f9;color:#333;">
+  <h1 style="font-size:24px;color:#2c3e50;border-bottom:2px solid #2c3e50;padding-bottom:10px;">Factura #{{invoiceNumber}}</h1>
+  <p style="margin:10px 0;font-size:14px;">Fecha: <strong>{{date}}</strong></p>
 
-<h2>Cliente</h2>
-<p>{{customerName}}</p>
+  <h2 style="font-size:20px;color:#34495e;margin-top:20px;">Cliente</h2>
+  <p style="margin:5px 0;font-size:14px;"><strong>{{customerName}}</strong></p>
 
-<h2>Envío</h2>
-<ul>
-  <li>Teléfono: {{shipping.telefono}}</li>
-  <li>Dirección: {{shipping.direccion}}</li>
-  <li>Código Postal: {{shipping.codigoPostal}}</li>
-  <li>Provincia: {{shipping.provincia}}</li>
-</ul>
+  <h2 style="font-size:20px;color:#34495e;margin-top:20px;">Envío</h2>
+  <ul style="list-style:none;padding:0;font-size:14px;">
+    <li style="margin:4px 0;"><strong>Teléfono:</strong> {{shipping.telefono}}</li>
+    <li style="margin:4px 0;"><strong>Dirección:</strong> {{shipping.direccion}}</li>
+    <li style="margin:4px 0;"><strong>Código Postal:</strong> {{shipping.codigoPostal}}</li>
+    <li style="margin:4px 0;"><strong>Provincia:</strong> {{shipping.provincia}}</li>
+  </ul>
 
-<h2>Productos</h2>
-<table>
-  <tr><th>Descripción</th><th>Cant.</th><th>Precio</th><th>Subtotal</th></tr>
-  {{#each items}}
+  <h2 style="font-size:20px;color:#34495e;margin-top:20px;">Productos</h2>
+  <table style="width:100%;border-collapse:collapse;font-size:14px;">
     <tr>
-      <td>{{this.description}}</td>
-      <td>{{this.quantity}}</td>
-      <td>{{this.price}}</td>
-      <td>{{multiply this.quantity this.price}}</td>
+      <th style="border:1px solid #ddd;padding:8px;text-align:left;background:#ecf0f1;">Descripción</th>
+      <th style="border:1px solid #ddd;padding:8px;text-align:right;background:#ecf0f1;">Cant.</th>
+      <th style="border:1px solid #ddd;padding:8px;text-align:right;background:#ecf0f1;">Precio</th>
+      <th style="border:1px solid #ddd;padding:8px;text-align:right;background:#ecf0f1;">Subtotal</th>
     </tr>
-  {{/each}}
-</table>
+    {{#each items}}
+    <tr>
+      <td style="border:1px solid #ddd;padding:8px;">{{this.description}}</td>
+      <td style="border:1px solid #ddd;padding:8px;text-align:right;">{{this.quantity}}</td>
+      <td style="border:1px solid #ddd;padding:8px;text-align:right;">{{this.price}}</td>
+      <td style="border:1px solid #ddd;padding:8px;text-align:right;">{{multiply this.quantity this.price}}</td>
+    </tr>
+    {{/each}}
+  </table>
 
-<h3>Total: €{{total}}</h3>
-<p>Payment Intent ID: {{paymentIntentId}}</p>
+  <h3 style="font-size:18px;color:#2c3e50;margin-top:20px;">Total: <span style="color:#e74c3c;">€{{total}}</span></h3>
+  <p style="font-size:12px;color:#7f8c8d;">Payment Intent ID: {{paymentIntentId}}</p>
+
+  <p style="margin-top:30px;font-size:16px;text-align:center;"><a href="https://frontkick-8hfv.onrender.com/" style="text-decoration:none;color:#ffffff;background:#e67e22;padding:10px 20px;border-radius:4px;display:inline-block;">Visítanos en Kickflip Shop</a></p>
+</div>
