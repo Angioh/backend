@@ -50,7 +50,16 @@ export class PedidosService {
     if (!pedido) throw new NotFoundException(`Pedido con id ${id} no encontrado`);
     return pedido;
   }
-
+  async findLast(): Promise<Pedido> {
+    const pedido = await this.pedidosRepo.findOne({
+      order: { id: 'DESC' },
+      relations: ['items'],
+    });
+    if (!pedido) {
+      throw new NotFoundException('No hay pedidos registrados aún');
+    }
+    return pedido;
+  }
  
   async update(id: number, data: any): Promise<Pedido> {
     const pedido = await this.findOne(id);
