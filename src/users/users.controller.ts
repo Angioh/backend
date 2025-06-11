@@ -7,6 +7,7 @@ import {
   Body,
   UseGuards,
   ParseIntPipe,
+  Delete,
 } from '@nestjs/common';
 import { UsersService, } from './users.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -43,5 +44,11 @@ export class UsersController {
     },
   ) {
     return this.usersService.update(id, data);
+  }
+
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard, OwnerOrAdminGuard)
+  async remove(@Param('id', ParseIntPipe) id: number) {
+    return this.usersService.remove(id);
   }
 }

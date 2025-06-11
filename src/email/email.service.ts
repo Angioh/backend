@@ -28,7 +28,7 @@ export class EmailService {
     paymentIntentId: string,
   ) {
   
-    const pdf = await this.invoiceService.generateInvoice(invoice);
+
 
 
     await this.mailer.sendMail({
